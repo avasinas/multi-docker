@@ -1,22 +1,21 @@
-sudo: required
 services:
   - docker
 
 before_install:
-  - docker build -t alex/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t avasinas/react-test -f ./client/Dockerfile.dev ./client
 
 script:
-  - docker run -e CI=true alex/react-test npm test -- --coverage
+  - docker run -e CI=true avasinas/react-test npm test -- --coverage
 
 after_success:
-  - docker build -t alex/multi-client ./client
-  - docker build -t alex/multi-nginx ./nginx
-  - docker build -t alex/multi-server ./server
-  - docker build -t alex/multi-worker ./worker
+  - docker build -t avasinas/multi-client ./client
+  - docker build -t avasinas/multi-nginx ./nginx
+  - docker build -t avasinas/multi-server ./server
+  - docker build -t avasinas/multi-worker ./worker
   # Login to Docker
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   # Take those images and push them to Docker Hub
-  - docker push alex/multi-client
-  - docker push alex/multi-nginx
-  - docker push alex/multi-server
-  - docker push alex/multi-worker
+  - docker push avasinas/multi-client
+  - docker push avasinas/multi-nginx
+  - docker push avasinas/multi-server
+  - docker push avasinas/multi-worker
